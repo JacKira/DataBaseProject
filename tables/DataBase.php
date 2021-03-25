@@ -21,11 +21,22 @@ CREATE TABLE `business_trips` (
   CONSTRAINT `business_trips_ibfk_1` FOREIGN KEY (`Employee`) REFERENCES `employee` (`ID_code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+INSERT INTO `business_trips` (`ID`, `Employee`, `City`, `Target`, `Start_Date`, `End_Date`, `Prepaid_Expense`) VALUES
+(1,	17,	'Саратов',	'Сертификация Оборудования',	'2011-02-21',	'2011-03-04',	40000),
+(2,	17,	'Самара',	'Сертификация Оборудования',	'2011-04-05',	'2011-04-29',	40000),
+(3,	17,	'Ростов',	'Сертификация Оборудования',	'2012-06-13',	'2012-06-27',	40000),
+(4,	17,	'Краснодар',	'Сертификация Оборудования',	'2013-09-01',	'2013-09-15',	40000),
+(5,	17,	'Адлер',	'Сертификация Оборудования',	'2013-12-15',	'2014-01-02',	40000),
+(6,	17,	'Санкт-Петербург',	'Сертификация Оборудования',	'2014-02-02',	'2014-02-28',	40000),
+(7,	17,	'Магадан',	'Сертификация Оборудования',	'2014-06-13',	'2014-06-30',	40000),
+(8,	17,	'Мурманск',	'Сертификация Оборудования',	'2014-08-03',	'2014-08-11',	40000),
+(9,	17,	'Севастополь',	'Сертификация Оборудования',	'2014-11-12',	'2014-12-01',	40000),
+(10,	17,	'Владивосток',	'Сертификация Оборудования',	'2015-01-29',	'2014-02-28',	40000);
 
 DROP TABLE IF EXISTS `business_trips_report`;
 CREATE TABLE `business_trips_report` (
-  `Date` date NOT NULL,
   `ID` bigint NOT NULL AUTO_INCREMENT,
+  `Date` date NOT NULL,
   `Purpose_Payment` text NOT NULL,
   `Value` float NOT NULL,
   `Businnes_Trips` bigint NOT NULL,
@@ -34,6 +45,17 @@ CREATE TABLE `business_trips_report` (
   CONSTRAINT `business_trips_report_ibfk_1` FOREIGN KEY (`Businnes_Trips`) REFERENCES `business_trips` (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+INSERT INTO `business_trips_report` (`ID`, `Date`, `Purpose_Payment`, `Value`, `Businnes_Trips`) VALUES
+(1,	'2011-03-04',	'На бытовые расходы',	20000,	1),
+(2,	'2011-04-29',	'На бытовые расходы',	20000,	2),
+(3,	'2012-06-27',	'На бытовые расходы',	20000,	3),
+(4,	'2013-09-15',	'На бытовые расходы',	20000,	4),
+(5,	'2014-01-02',	'На бытовые расходы',	20000,	5),
+(6,	'2014-02-28',	'На бытовые расходы',	30000,	6),
+(7,	'2014-06-30',	'На бытовые расходы',	25000,	7),
+(8,	'2014-08-11',	'На бытовые расходы',	15000,	8),
+(9,	'2014-12-01',	'На бытовые расходы',	25000,	9),
+(10,	'2014-02-28',	'На бытовые расходы',	40000,	10);
 
 DROP TABLE IF EXISTS `department`;
 CREATE TABLE `department` (
@@ -117,6 +139,16 @@ CREATE TABLE `employee_transfers` (
   CONSTRAINT `employee_transfers_ibfk_2` FOREIGN KEY (`Employee`) REFERENCES `employee` (`ID_code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+INSERT INTO `employee_transfers` (`ID`, `Justification`, `Order_Number`, `Order_Date`, `Employee`, `Stuffing_Table`) VALUES
+(1,	'Перевод по заявлению',	'ПР0000001',	'2010-03-25',	13,	15),
+(2,	'Перевод по заявлению',	'ПР0000002',	'2011-03-25',	13,	12),
+(3,	'Перевод по заявлению',	'ПР0000003',	'2012-03-25',	13,	15),
+(4,	'Перевод по заявлению',	'ПР0000004',	'2013-03-25',	13,	12),
+(6,	'Перевод по заявлению',	'ПР0000005',	'2014-03-25',	13,	15),
+(7,	'Перевод по заявлению',	'ПР0000006',	'2015-03-25',	13,	12),
+(8,	'Перевод по заявлению',	'ПР0000007',	'2016-03-25',	13,	15),
+(9,	'Перевод по заявлению',	'ПР0000008',	'2017-03-25',	13,	12),
+(16,	'Перевод по заявлению',	'ПР0000009',	'2018-03-25',	13,	15);
 
 DROP TABLE IF EXISTS `passport`;
 CREATE TABLE `passport` (
@@ -297,4 +329,4 @@ INSERT INTO `staffing_table` (`ID`, `Position`, `Count`, `Employed`, `Dept`) VAL
 (29,	8,	1,	1,	10),
 (30,	11,	3,	3,	4);
 
--- 2021-03-19 16:59:58
+-- 2021-03-25 15:20:33
