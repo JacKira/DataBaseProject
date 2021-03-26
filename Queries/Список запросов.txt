@@ -1,0 +1,68 @@
+1) Все должности
+2) Работники по должностям
+3) Средний оклад по отделу 
+4) Средняя сумма командировочных отдела
+5) Вывод истории перемещений работника
+6) Адрес проживания работника
+7) Работники по проектам
+8) Все отделы
+9) Все проекты
+10) Все командировки
+11) Работники по отделам
+12) Работники не отчитавшиеся за командировку
+
+======================== /////////// =====================
+12) SELECT ID_code, Last_Name, First_Name 
+	FROM Employee empl, Business_trips trips
+	WHERE (empl.ID_Code = trips.Employee)
+	AND ( trips.ID NOT IN (SELECT rpt.Business_Trips FROM business_trips_report rpt))
+	AND (trips.End_Date < CURRENT_DATE())
+
+11) SELECT dept.Name, empl.Last_Name, empl.First_Name 
+	FROM Department dept, Staffing_Table staff, Employee empl
+	WHERE (dept.ID = staff.Dept) AND (empl.Staffing_Table = staff.ID)
+
+10) SELECT * FROM business_trips
+9) SELECT * FROM projects
+8) SELECT * FROM department
+7) SELECT ID_code, Last_Name, First_Name, project_name 
+	FROM employee as empl, project_employee as prj_empl, projects as proj 
+	WHERE (empl.ID_code = prj_empl.Employee) AND (prj_empl.Project = proj.project_key)
+
+6) SELECT ID_code, Last_Name, First_Name, Adress 
+	FROM employee empl 
+	INNER JOIN private_information inf 
+	ON inf.ID = empl.ID_code
+
+5) SELECT ID_code, Last_Name, First_Name, Order_date, Staffing_Table 
+	FROM Employee empl 
+	INNER JOIN employee_transfers trans
+	ON empl.ID_code = trans.Employee
+
+4) SELECT dept.Name, AVG(Prepaid_Expense)
+	FROM Department dept, Staffing_Table staff, Employee empl, Business_Trips trips
+	WHERE (dept.ID = staff.Dept) 
+	AND (staff.ID = empl.Staffing_Table) 
+	AND (empl.ID_code = trips.Employee)
+	GROUP BY dept.ID
+
+
+
+3)  SELECT dept.Name, AVG(Salary * Employed)
+	FROM department dept, position pos, staffing_table staff
+	WHERE (dept.ID = staff.Dept) AND (staff.Position = pos.ID)
+	GROUP BY dept.ID
+	 
+2) SELECT pos.Name, Last_Name, First_Name 
+	FROM Position pos, Staffing_Table staff, Employee empl
+	WHERE (pos.ID = staff.Position) AND (empl.Staffing_Table = staff.ID)
+	GROUP BY pos.Name
+
+
+1) SELECT * FROM Position 
+
+
+
+
+
+
