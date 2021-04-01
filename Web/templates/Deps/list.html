@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>{% block title %}Отделы{% endblock %}</h1>
+
+
+<hr>
+
+{% for dep in Deps %}
+    
+<div class="alert alert-danger">
+    <p>
+        {{dep[1]}}
+    </p>
+    
+   
+</div>
+{% endfor %}
+{% endblock %}

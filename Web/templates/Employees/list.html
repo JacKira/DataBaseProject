@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>{% block title %}Работники{% endblock %}</h1>
+
+
+<hr>
+
+{% for empl in Employees %}
+    
+<div class="alert alert-danger">
+    <p>
+        Фамилиия: {{empl[1]}} <br>
+        Имя: {{empl[2]}} <br>
+        Отчество: {{empl[3]}} <br>
+    </p>
+    
+   
+</div>
+{% endfor %}
+{% endblock %}
