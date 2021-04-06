@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>{% block title %}Командировки{% endblock %}</h1>
+
+
+<hr>
+
+{% for row in Results %}
+    
+<div class="alert alert-danger">
+    <p>
+        Фамилиия: {{row[1]}} <br>
+        Имя: {{row[2]}} <br>
+        Город: {{row[3]}} <br>
+        Цель: {{row[4]}} <br>
+    </p>
+    
+   
+</div>
+{% endfor %}
+{% endblock %}

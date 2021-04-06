@@ -9,14 +9,20 @@
 
 {% for empl in Employees %}
     
-<div class="alert alert-danger">
+<div  class="alert alert-danger">
     <p>
+        Код работника: {{empl[0]}} <br>
         Фамилиия: {{empl[1]}} <br>
         Имя: {{empl[2]}} <br>
         Отчество: {{empl[3]}} <br>
+        Должность: {{empl[4]}} <br>
+        Отдел: {{empl[5]}} <br>
     </p>
-    
-   
+    <a href="{{ url_for('GetEmplInfo', ID_code = empl[0]) }}">
+        <span class="btn btn-warning btn-sm">Подробнее</span>
+    </a>
+
 </div>
+
 {% endfor %}
 {% endblock %}

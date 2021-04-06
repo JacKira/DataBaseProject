@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="alert alert-danger">
+    <p>
+        Код работника: {{Employee[0]}} <br>
+        Фамилия: {{Employee[1]}} <br>
+        Имя: {{Employee[2]}} <br>
+        Отчество: {{Employee[3]}} <br>
+        Должность: {{Employee[3]}}<br>
+        Отдел: {{Employee[3]}} <br>
+    </p>
+</div>
+
+{% if Trips | length > 0 %}
+<div class="alert alert-danger">
+    <p>Командировки:</p>
+    <div class="container" style="text-align: center;">
+        <div class="row border-bottom border-dark" >
+            <div class="col" style="width: 23%;">
+                Город
+            </div>
+            <div class="col" style="width: 23%;">
+                <center> Цель 
+            </div>
+            <div class="col" style="width: 23%;">
+                Дата начала
+            </div>
+            <div class="col" style="width: 23%;">
+                Дата окончания
+            </div>
+        </div>
+        {% for trip in Trips %}
+        <div class="row">
+            <div class="col" style="width: 23%;">
+                {{trip[0]}}
+            </div>
+            <div class="col" style="width: 23%;">
+                {{trip[1]}}
+            </div>
+            <div class="col" style="width: 23%;">
+                {{trip[2]}}
+            </div>
+            <div class="col" style="width: 23%;">
+                {{trip[3]}}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}
