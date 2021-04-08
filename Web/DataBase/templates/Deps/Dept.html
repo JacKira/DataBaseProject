@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>{{Department[0][0]}}</h1>
+<div class="alert alert-danger">
+    <p>Штатное расписание:</p>
+    <div class="container" style="text-align: center;">
+        <div class="row border-bottom border-dark" >
+            <div class="col" style="width: 23%;">
+                Должность
+            </div>
+            <div class="col" style="width: 23%;">
+                Квота
+            </div>
+            <div class="col" style="width: 23%;">
+                Нанято
+            </div>
+        </div>
+        {% for staff in Staffs %}
+        <div class="row">
+            <div class="col" style="width: 23%;">
+                {{staff[0]}}
+            </div>
+            <div class="col" style="width: 23%;">
+                {{staff[1]}}
+            </div>
+            <div class="col" style="width: 23%;">
+                {{staff[2]}}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

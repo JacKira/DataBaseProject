@@ -16,6 +16,9 @@
         Город: {{row[3]}} <br>
         Цель: {{row[4]}} <br>
     </p>
+    <a href="{{ url_for('GetTripRep', id = row[0]) }}">
+        <span class="btn btn-warning btn-sm">Авансовый отчет</span>
+    </a>
     
    
 </div>

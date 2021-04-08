@@ -13,8 +13,9 @@
     <p>
         {{dep[1]}}
     </p>
-    
-   
+    <a href="{{ url_for('GetDeptInf', id = dep[0]) }}">
+        <span class="btn btn-warning btn-sm">Подробнее</span>
+    </a>
 </div>
 {% endfor %}
 {% endblock %}

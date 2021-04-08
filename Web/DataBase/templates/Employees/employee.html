@@ -7,14 +7,16 @@
         Фамилия: {{Employee[1]}} <br>
         Имя: {{Employee[2]}} <br>
         Отчество: {{Employee[3]}} <br>
-        Должность: {{Employee[3]}}<br>
-        Отдел: {{Employee[3]}} <br>
+        Должность: {{Employee[4]}}<br>
+        Отдел: {{Employee[5]}} <br>
     </p>
+    <a href="{{ url_for('DeleteEmployee', id = Employee[0])}}" method="POST">
+        <span class="btn btn-success btn-sm">Удалить работника</span>
+    </a>
 </div>
 
-{% if Trips | length > 0 %}
 <div class="alert alert-danger">
-    <p>Командировки:</p>
+    <h3>Командировки:</h3>
     <div class="container" style="text-align: center;">
         <div class="row border-bottom border-dark" >
             <div class="col" style="width: 23%;">
@@ -48,6 +50,84 @@
         {% endfor %}
     </div>
 </div>
-{% endif %}
 
+
+<div class="alert alert-danger">
+    <h3>Перемещения в организации:</h3>
+    <div class="container" style="text-align: center;">
+        <div class="row border-bottom border-dark" >
+            <div class="col-xs">
+                Номер приказа
+            </div>
+            <div class="col-xs">
+                Дата приказа
+            </div>
+            <div class="col-sm">
+                Прошлая должность
+            </div>
+            <div class="col">
+                Прошлый отдел
+            </div>
+        </div>
+        {% for trans in Transfers %}
+        <div class="row">
+            <div class="col-xs">
+                {{trans[0]}}
+            </div>
+            <div class="col-xs">
+                {{trans[1]}}
+            </div>
+            <div class="col-sm">
+                {{trans[2]}}
+            </div>
+            <div class="col" style="width: 35%;">
+                {{trans[3]}}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<div class="alert alert-danger">
+    <h3>Участие в проектах:</h3>
+    <div class="container" style="text-align: center;">
+        <div class="row border-bottom border-dark" >
+            <div class="col" style="width: 23%;">
+                Название
+            </div>
+            <div class="col" style="width: 23%;">
+                Оплата
+            </div>
+        </div>
+        {% for proj in Projects %}
+        <div class="row">
+            <div class="col" style="width: 23%;">
+                {{proj[3]}}
+            </div>
+            <div class="col" style="width: 23%;">
+                {{proj[4]}}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<div class="alert alert-danger">
+    <h3>Личная информация</h3>
+    <p>
+        Семейное положение: {{Information[1]}} <br>
+        Количество членов семьи: {{Information[2]}} <br>
+        Адрес: {{Information[3]}} <br>
+    </p>
+</div>
+
+
+<div class="alert alert-danger">
+    <h3>Паспортные данные</h3>
+    <p>
+        Номер: {{Passport[1]}} <br>
+        Дата выдачи: {{Passport[2]}} <br>
+        Место выдачи: {{Passport[3]}} <br>
+    </p>
+</div>
 {% endblock %}

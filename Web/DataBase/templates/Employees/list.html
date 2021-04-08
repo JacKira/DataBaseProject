@@ -3,7 +3,9 @@
 {% block content %}
 
 <h1>{% block title %}Работники{% endblock %}</h1>
-
+<a href="{{ url_for('AddEmployee') }}">
+    <span class="btn btn-success btn-sm">Добавить работника</span>
+</a>
 
 <hr>
 

@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="alert alert-danger">
+    <p>Авансовый отчет:</p>
+    <div class="container" style="text-align: center;">
+        <div class="row border-bottom border-dark" >
+            <div class="col" style="width: 23%;">
+                Дата
+            </div>
+            <div class="col" style="width: 23%;">
+                Обоснование
+            </div>
+            <div class="col" style="width: 23%;">
+                Значение
+            </div>
+        </div>
+        {% for rep in Reps %}
+        <div class="row">
+            <div class="col" style="width: 23%;">
+                {{rep[1]}}
+            </div>
+            <div class="col" style="width: 23%;">
+                {{rep[2]}}
+            </div>
+            <div class="col" style="width: 23%;">
+                {{rep[3]}}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}
