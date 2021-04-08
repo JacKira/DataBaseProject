@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request
-from flask import Flask, render_template, request, redirect, url_for, flash 
+from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_mysqldb import MySQL
 app = Flask(__name__)
 
@@ -12,15 +12,15 @@ app.config['MYSQL_PORT'] = 3306
 app.config['SECRET_KEY'] = '0ur_$uper^puper_$ecret_key!'
 
 
-
-
 mysql = MySQL(app)
+
 
 @app.route('/')
 def index():
     return render_template('index.html')
 
-@app.route('/')    
+
+@app.route('/')
 def GetEmployees():
     cur = mysql.connection.cursor()
     cur.execute("CALL GetEmployees()")
@@ -37,6 +37,7 @@ def GetEmployee(id):
     empl = cur.fetchone()
     cur.close()
     return empl
+
 
 @app.route('/')
 def GetTripsByEmplId(id):
@@ -63,6 +64,7 @@ def GetProjsByEmplId(id):
     cur.close()
     return projs
 
+
 @app.route('/')
 def GetTransfersByEmplId(id):
     cur = mysql.connection.cursor()
@@ -75,6 +77,7 @@ def GetTransfersByEmplId(id):
     cur.close()
     return trans
 
+
 @app.route('/')
 def GetPrivInfById(id):
     cur = mysql.connection.cursor()
@@ -83,6 +86,7 @@ def GetPrivInfById(id):
     inf = cur.fetchone()
     cur.close()
     return inf
+
 
 @app.route('/')
 def GetDeptName(id):
@@ -96,6 +100,7 @@ def GetDeptName(id):
     _name.append(id)
     return _name
 
+
 @app.route('/')
 def GetStaffByDepId(id):
     cur = mysql.connection.cursor()
@@ -108,10 +113,12 @@ def GetStaffByDepId(id):
     cur.close()
     return staff
 
+
 @app.route('/')
 def GetReports(id):
     cur = mysql.connection.cursor()
-    query = "SELECT * FROM business_trips_report rep WHERE rep.ID = {0}".format(id)
+    query = "SELECT * FROM business_trips_report rep WHERE rep.ID = {0}".format(
+        id)
     len = cur.execute(query)
     if(len > 0):
         reps = cur.fetchall()
@@ -119,6 +126,7 @@ def GetReports(id):
         reps = []
     cur.close()
     return reps
+
 
 @app.route('/')
 def GetPassport(id):
@@ -129,6 +137,7 @@ def GetPassport(id):
     cur.close()
     return pas
 
+
 @app.route('/Employees/<int:ID_code>')
 def GetEmplInfo(ID_code):
     empl = GetEmployee(ID_code)
@@ -137,32 +146,33 @@ def GetEmplInfo(ID_code):
     projs = GetProjsByEmplId(ID_code)
     trans = GetTransfersByEmplId(ID_code)
     pas = GetPassport(ID_code)
-    return render_template('Employees/employee.html', Employee = empl, Trips = trips, Information = inf, Projects = projs, Transfers = trans, Passport = pas)
+    return render_template('Employees/employee.html', Employee=empl, Trips=trips, Information=inf, Projects=projs, Transfers=trans, Passport=pas)
 
 
 @app.route('/Deps/<int:id>')
 def GetDeptInf(id):
     name = GetDeptName(id)
     staff = GetStaffByDepId(id)
-    return render_template('Deps/Dept.html', Department = name, Staffs = staff)
-
+    return render_template('Deps/Dept.html', Department=name, Staffs=staff)
 
 
 @app.route('/BusinessTrips/<int:id>')
 def GetTripRep(id):
     reps = GetReports(id)
-    return render_template('BusinessTrips/Trip.html', Reps = reps)
+    return render_template('BusinessTrips/Trip.html', Reps=reps)
 
 
 @app.route('/Employees')
 def EmplList():
     empls = GetEmployees()
-    return render_template('Employees/list.html', Employees = empls)
+    return render_template('Employees/list.html', Employees=empls)
+
 
 @app.route('/Projects')
 def ProjsList():
     projs = GetProjs()
-    return render_template('Projects/list.html', Projects = projs)
+    return render_template('Projects/list.html', Projects=projs)
+
 
 @app.route('/')
 def GetProjs():
@@ -190,6 +200,7 @@ def GetAVGSalByDep():
     cur.close()
     return sal
 
+
 @app.route('/')
 def GetAVGBusByDep():
     cur = mysql.connection.cursor()
@@ -197,6 +208,7 @@ def GetAVGBusByDep():
     sal = cur.fetchall()
     cur.close()
     return sal
+
 
 @app.route('/')
 def GetBusinessTripsAndEmpl():
@@ -206,25 +218,30 @@ def GetBusinessTripsAndEmpl():
     cur.close()
     return rows
 
+
 @app.route('/Deps')
 def DepsList():
     deps = GetDeps()
-    return render_template('Deps/list.html', Deps = deps)
+    return render_template('Deps/list.html', Deps=deps)
+
 
 @app.route('/SalaryReport')
 def GetAVGSalByDepReport():
     sal = GetAVGSalByDep()
-    return render_template('SalaryReport/list.html', Results = sal)
+    return render_template('SalaryReport/list.html', Results=sal)
+
 
 @app.route('/BusinessReport')
 def GetAVGBusByDepReport():
     res = GetAVGBusByDep()
-    return render_template('SalaryReport/list.html', Results = res)
+    return render_template('SalaryReport/list.html', Results=res)
+
 
 @app.route('/BusinessTrips')
 def GetTripsAndEmplList():
     rows = GetBusinessTripsAndEmpl()
-    return render_template('BusinessTrips/list.html', Results = rows)
+    return render_template('BusinessTrips/list.html', Results=rows)
+
 
 @app.route('/Employees/create', methods=('GET', 'POST'))
 def AddEmployee():
@@ -250,13 +267,54 @@ def AddEmployee():
         else:
             cur = mysql.connection.cursor()
             query = "INSERT INTO Employee (Last_Name, First_Name, Otchestvo, Staffing_Table, BirthDay, Premium) \n \
-             VALUES ('{0}', '{1}', '{2}', {3}, '{4}', {5})".format(s_name, f_name, otch, staff ,brd, prem)
+             VALUES ('{0}', '{1}', '{2}', {3}, '{4}', {5})".format(s_name, f_name, otch, staff, brd, prem)
             cur.execute(query)
             mysql.connection.commit()
             cur.close()
             flash('ok!')
             return redirect(url_for('EmplList'))
     return render_template('Employees/create.html')
+
+
+@app.route('/Employees/EditPrivInf<int:id>', methods=('GET', 'POST'))
+def EditPrivInf(id):
+    """Функция-представление для создания поста"""
+    if request.method == 'POST':
+        stat = request.form['Status']
+        count = request.form['Count']
+        adr = request.form['Adres']
+        cur = mysql.connection.cursor()
+        query = "call UPDPrivInfById({0}, '{1}', {2}, '{3}')".format(id, stat, count, adr)
+        cur.execute(query)
+        mysql.connection.commit()
+        cur.close()
+        flash('ok!')
+        return redirect(url_for('GetEmplInfo', ID_code = id))
+    inf = GetPrivInfById(id)
+    return render_template('Employees/EditPrivInf.html', Inform = inf)     
+
+@app.route('/Employees/AddPassport<int:id>', methods=('GET', 'POST'))
+def AddPassport(id):
+    """Функция-представление для создания поста"""
+    if request.method == 'POST':
+        num = request.form['Number']
+        date = request.form['Date']
+        inst = request.form['Inst']
+        if not num:
+            flash('Вы не добавили код и номер паспорта!')
+        if not date:
+            flash('Вы не добавили дату выдачи!')
+        if not inst:
+            flash('Вы не добавили кем выдано!')
+        cur = mysql.connection.cursor()
+        query = "INSERT INTO passport (Number, Issue_Date, Institution, Employee) VALUES('{1}', '{2}', '{3}', {0})".format(id, num, date, inst)
+        cur.execute(query)
+        mysql.connection.commit()
+        cur.close()
+        flash('ok!')
+        return redirect(url_for('GetEmplInfo', ID_code = id))
+    return render_template('Employees/AddPassport.html')      
+
 
 @app.route('/Employees/<int:id>/delete')
 def DeleteEmployee(id):
@@ -268,5 +326,5 @@ def DeleteEmployee(id):
     cur.close()
     return redirect(url_for('EmplList'))
 
-app.run(debug=True)
 
+app.run(debug=True)

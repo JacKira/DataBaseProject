@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>{% block title %} Добавление нового паспорта {% endblock %}</h1>
+
+<form method="post">
+    <div class="form-group">
+        <label for="Number">Код и номер паспорта</label>
+        <input type="text" name="Number"
+               placeholder="Номер" class="form-control"
+               value=''></input>
+    </div>
+
+    <div class="form-group">
+        <label for="Date">Дата выдачи</label>
+        <input type="Date" name="Date"
+               placeholder="" class="form-control"
+               value=''></input>
+    </div>
+
+    <div class="form-group">
+        <label for="Inst">Адрес</label>
+        <input type="text" name="Inst"
+               placeholder="Кем выдан" class="form-control"
+               value= ''></input>
+    </div>
+
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+    </div>
+</form>
+{% endblock %}

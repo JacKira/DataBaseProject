@@ -119,6 +119,9 @@
         Количество членов семьи: {{Information[2]}} <br>
         Адрес: {{Information[3]}} <br>
     </p>
+    <a href="{{ url_for('EditPrivInf', id = Employee[0])}}" method="POST">
+        <span class="btn btn-success btn-sm">Редактировать личную информацию</span>
+    </a>
 </div>
 
 
@@ -129,5 +132,8 @@
         Дата выдачи: {{Passport[2]}} <br>
         Место выдачи: {{Passport[3]}} <br>
     </p>
+    <a href="{{ url_for('AddPassport', id = Employee[0])}}" method="POST">
+        <span class="btn btn-success btn-sm">Добавить паспорт</span>
+    </a>
 </div>
 {% endblock %}
