@@ -11,7 +11,7 @@
         Отдел: {{Employee[5]}} <br>
     </p>
     <a href="{{ url_for('DeleteEmployee', id = Employee[0])}}" method="POST">
-        <span class="btn btn-success btn-sm">Удалить работника</span>
+        <span class="btn btn-danger btn-sm">Удалить работника</span>
     </a>
     <a href="{{ url_for('EditEmployee', ID_code = Employee[0])}}" method="POST">
         <span class="btn btn-success btn-sm">Редактировать</span>
@@ -26,7 +26,7 @@
                 Город
             </div>
             <div class="col" style="width: 23%;">
-                <center> Цель 
+                 Цель 
             </div>
             <div class="col" style="width: 23%;">
                 Дата начала
@@ -56,35 +56,45 @@
 
 
 <div class="alert alert-danger">
+    <a href="{{ url_for('createTransfer', ID_code = Employee[0])}}" method="POST">
+        <span class="btn btn-success btn-sm">Добавить отчет о перемещении</span>
+    </a>
     <h3>Перемещения в организации:</h3>
     <div class="container" style="text-align: center;">
         <div class="row border-bottom border-dark" >
-            <div class="col-xs">
+            <div class="col-xs" style="width: 15%;">
                 Номер приказа
             </div>
-            <div class="col-xs">
+            <div class="col-xs"style="width: 10%;">
                 Дата приказа
             </div>
-            <div class="col-sm">
+            <div class="col-sm"style="width: 10%;">
                 Прошлая должность
             </div>
-            <div class="col">
+            <div class="col-md"style="width: 30%;">
                 Прошлый отдел
+            </div>
+            <div class="col-"style="width: 10%;">
             </div>
         </div>
         {% for trans in Transfers %}
-        <div class="row">
-            <div class="col-xs">
-                {{trans[0]}}
-            </div>
-            <div class="col-xs">
+        <div class="row" style="padding-top: 0.5%;">
+            <div class="col-xs"style="width: 15%;">
                 {{trans[1]}}
             </div>
-            <div class="col-sm">
+            <div class="col-xs"style="width: 10%;">
                 {{trans[2]}}
             </div>
-            <div class="col" style="width: 35%;">
+            <div class="col-sm"style="width: 10%;">
                 {{trans[3]}}
+            </div>
+            <div class="col-md" style="width: 30%;">
+                {{trans[4]}}
+            </div>
+            <div class="col-"style="width: 10%;">
+                <a href="{{ url_for('DeleteEmplTransfer', id = trans[0], ID_c = Employee[0])}}" method="POST">
+                    <span class="btn btn-danger btn-sm">Удалить</span>
+                </a>
             </div>
         </div>
         {% endfor %}

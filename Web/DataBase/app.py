@@ -508,6 +508,8 @@ def DeleteDept(id):
     flash("Отдел удален!")
     return redirect(url_for('DepsList'))
 
+
+
 @app.route("/BuisinessTrips/<int:id>", methods= ['POST'])
 def DeleteBuisinessTrip(id):
     """Функция-представление для удаления отдела"""
@@ -518,6 +520,18 @@ def DeleteBuisinessTrip(id):
     cur.close()
     flash("Командировка удалена!")
     return redirect(url_for('GetTripsAndEmplList'))
+
+
+
+@app.route("/Employees/<int:id><int:ID_c>", methods= ['POST'])
+def DeleteEmplTransfer(id, ID_c):
+    """Функция-представление для удаления отдела"""
+    cur = mysql.connection.cursor()
+    query = "DELETE FROM employee_transfers WHERE ID = {0}".format(id)
+    cur.execute(query)
+    mysql.connection.commit()
+    cur.close()
+    return redirect(url_for('GetEmplInfo', ID_code = ID_c))
 
 
 @app.route('/BusinessTrips/createReport<int:id>', methods=('GET', 'POST'))
@@ -540,5 +554,33 @@ def AddBusinessTrips(id):
         flash('ok!')
         return redirect(url_for('GetTripRep', id = id)) 
     return render_template('BusinessTrips/createReport.html')    
+
+@app.route('/Employees/createTransfer<int:ID_code>', methods=('GET', 'POST'))
+def createTransfer(ID_code):
+    if request.method == 'POST':
+        justi = request.form['Justification']
+        num = request.form['Order_Number']
+        date = request.form['Order_Date']
+        staff = request.form['Staffing_Table']
+
+        if not justi:
+            flash('Вы не добавили причину перевода')
+        if not num:
+            flash('Вы не добавили номер приказа')
+        if not date:
+            flash('Вы не добавили дату приказа!')
+        if not staff:
+            flash('Вы не добавили штатное расписание!')
+        else:
+            cur = mysql.connection.cursor()
+            query = "CALL InsEmplTrans({0}, {1},  '{2}', '{3}', '{4}')".format(ID_code, staff, justi, num, date)
+            cur.execute(query)
+            mysql.connection.commit()
+            cur.close()
+            flash('ok!')
+            return redirect(url_for('GetEmplInfo', ID_code = ID_code))
+    staff = GetStaffAndDept()
+    return render_template('Employees/createTransfer.html',  Staff = staff)
+
 
 app.run(debug=True)

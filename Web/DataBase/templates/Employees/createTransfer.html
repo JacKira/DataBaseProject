@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>{% block title %} Добавление нового отчета о переводе {% endblock %}</h1>
+
+<form method="post">
+    <div class="form-group">
+        <label for="Justification">Причина перевода</label>
+        <input type="text" name="Justification"
+               placeholder="" class="form-control"
+               value=""></input>
+    </div>
+
+    <div class="form-group">
+        <label for="Order_Number">Номер приказа</label>
+        <input type="text" name="Order_Number"
+               placeholder="" class="form-control"
+               value=""></input>
+    </div>
+
+    <div class="form-group">
+        <label for="Order_Date">Дата приказа</label>
+        <input type="date" name="Order_Date"
+               placeholder="" class="form-control"
+               value=""></input>
+    </div>
+
+    <div class="form-group">
+        <label for="Staffing_Table">Штатное расписание</label>
+               <select name="Staffing_Table" class="selectpicker form-control">
+                {% for staff in Staff %}
+                        <option  value="{{ staff[0] }}">{{ staff[1] }} - {{ staff[2] }}</option>
+                {% endfor %}
+              </select>
+    </div>
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Добавить отчет</button>
+    </div>
+</form>
+{% endblock %}
