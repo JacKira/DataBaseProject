@@ -3,6 +3,9 @@
 {% block content %}
 <h1>{{Department[0][0]}}</h1>
 <div class="alert alert-danger">
+    <a href="{{ url_for('AddStaffTable', id = Department[1]) }}">
+        <span class="btn btn-warning btn-sm">Добавить штатное расписание</span>
+    </a>
     <p>Штатное расписание:</p>
     <div class="container" style="text-align: center;">
         <div class="row border-bottom border-dark" >

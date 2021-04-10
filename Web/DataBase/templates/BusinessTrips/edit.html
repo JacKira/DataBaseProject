@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>{% block title %}Редактирование командировки {% endblock %}</h1>
+
+<form method="post">
+    <div class="form-group">
+        <label for="Employee">Работник</label>
+        <select name="Employee" class="selectpicker form-control">
+            {% for empl in Empls %}
+                {% if Trip[1] != empl[0] %}
+                    <option value="{{empl[0]}}">
+                       {{empl[5]}} - {{empl[4]}};
+                      {{empl[1]}}  {{empl[2]}} {{empl[3]}};
+                    </option>
+                {% else %}
+                    <option  value= "{{empl[0]}}" selected="selected" >
+                         {{empl[5]}} - {{empl[4]}};
+                        {{empl[1]}}  {{empl[2]}} {{empl[3]}};
+                    </option>
+                {% endif %}
+            
+            {% endfor %}
+          </select>
+    </div>
+
+    <div class="form-group">
+        <label for="City">Город</label>
+        <input type="text" name="City"
+               placeholder="Название города" class="form-control"
+               value="{{Trip[2]}}"></input>
+    </div>
+
+    <div class="form-group">
+        <label for="Target">Цель командировки</label>
+        <input type="text" name="Target"
+               placeholder="Назначение работ" class="form-control"
+               value="{{Trip[3]}}"></input>
+    </div>
+
+    <div class="form-group">
+        <label for="StartDate">Дата начала</label>
+        <input type="date" name="StartDate"
+               placeholder="" class="form-control"
+               value="{{Trip[4]}}"></input>
+    </div>
+
+    <div class="form-group">
+        <label for="EndDate">Дата окончания</label>
+        <input type="date" name="EndDate"
+               placeholder="" class="form-control"
+               value="{{Trip[5]}}"></input>
+    </div>
+
+    <div class="form-group">
+        <label for="Expense">Аванс</label>
+        <input type="number" name="Expense"
+               placeholder="Expense" class="form-control"
+               value="{{Trip[6]}}"></input>
+    </div>
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary"> Сохранить изменения</button>
+    </div>
+</form>
+{% endblock %}

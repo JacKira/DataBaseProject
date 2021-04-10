@@ -13,6 +13,9 @@
     <a href="{{ url_for('DeleteEmployee', id = Employee[0])}}" method="POST">
         <span class="btn btn-success btn-sm">Удалить работника</span>
     </a>
+    <a href="{{ url_for('EditEmployee', ID_code = Employee[0])}}" method="POST">
+        <span class="btn btn-success btn-sm">Редактировать</span>
+    </a>
 </div>
 
 <div class="alert alert-danger">

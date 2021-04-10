@@ -2,6 +2,9 @@
 
 {% block content %}
 <div class="alert alert-danger">
+    <a href="{{ url_for('AddBusinessTrips', id = ID) }}">
+        <span class="btn btn-warning btn-sm">Добавить отчет</span>
+    </a>
     <p>Авансовый отчет:</p>
     <div class="container" style="text-align: center;">
         <div class="row border-bottom border-dark" >

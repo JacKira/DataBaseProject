@@ -1,55 +1,58 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>{% block title %} Добавление нового работника {% endblock %}</h1>
+<h1>{% block title %} Изменение информации о работнике {% endblock %}</h1>
 
 <form method="post">
     <div class="form-group">
         <label for="Last_Name">Фамилия</label>
         <input type="text" name="Last_Name"
                placeholder="Фамилия" class="form-control"
-               value="{{ request.form['Last_Name'] }}"></input>
+               value="{{ Inf[1] }}"></input>
     </div>
 
     <div class="form-group">
         <label for="First_Name">Имя</label>
         <input type="text" name="First_Name"
                placeholder="Имя" class="form-control"
-               value="{{ request.form['First_Name'] }}"></input>
+               value="{{ Inf[2] }}"></input>
     </div>
 
     <div class="form-group">
         <label for="Otchestvo">Отчество</label>
         <input type="text" name="Otchestvo"
                placeholder="Otchestvo" class="form-control"
-               value="{{ request.form['Otchestvo'] }}"></input>
+               value="{{ Inf[3] }}"></input>
     </div>
 
     <div class="form-group">
         <label for="Staffing_Table">Штатное расписание</label>
                <select name="Staffing_Table" class="selectpicker form-control">
                 {% for staff in Staff %}
+                    {% if Inf[4] != staff[0]%}
                         <option type='number' value="{{ staff[0] }}">{{ staff[1] }} - {{ staff[2] }}</option>
+                    {% else %}
+                        <option type='number' value="{{ staff[0] }} " selected="selected" >{{ staff[1] }} - {{ staff[2] }}</option>
+                    {% endif %}
                 {% endfor %}
               </select>
     </div>
 
     <div class="form-group">
-        <label for="BirthDay">Дата рождения</label>
+        <label for="BirthDay">Штатное расписание</label>
         <input type="date" name="BirthDay"
                placeholder="BirthDay" class="form-control"
-               value="{{ request.form['BirthDay'] }}"></input>
+               value="{{ Inf[5]}}"></input>
     </div>
 
     <div class="form-group">
         <label for="Premium">Премия</label>
         <input type="number" name="Premium"
                placeholder="Premium" class="form-control"
-               value="0"></input>
+               value="{{ Inf[6] }}">0</input>
     </div>
-
     <div class="form-group">
-        <button type="submit" class="btn btn-primary">Добавить работника</button>
+        <button type="submit" class="btn btn-primary">Сохранить изменения</button>
     </div>
 </form>
 {% endblock %}
