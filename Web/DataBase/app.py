@@ -423,7 +423,7 @@ def AddPassport(id):
         mysql.connection.commit()
         cur.close()
         flash('ok!')
-        return redirect(url_for('GetEmplInfo'))
+        return redirect(url_for('GetEmplInfo', ID_code = id))
     return render_template('Employees/AddPassport.html')      
 
 @app.route('/Deps/create', methods=('GET', 'POST'))
@@ -460,6 +460,24 @@ def AddProj():
         flash('ok!')
         return redirect(url_for('ProjsList'))
     return render_template('Projects/create.html') 
+
+@app.route('/Projects/<int:id>/edit', methods=('GET', 'POST'))
+def EditProj(id):
+    if request.method == 'POST':
+        name = request.form['Name']
+
+        if not name:
+            flash('Вы неввели название проекта!')
+     
+        cur = mysql.connection.cursor()
+        query = "UPDATE projects SET project_name = '{0}' WHERE project_key = {1}".format(name, id)
+        cur.execute(query)
+        mysql.connection.commit()
+        cur.close()
+        flash('ok!')
+        return redirect(url_for('ProjsList'))
+    proj = GetProjById(id)
+    return render_template('Projects/edit.html', Project = proj) 
 
 
 @app.route('/Employees/<int:id>/delete')
