@@ -19,6 +19,15 @@ mysql = MySQL(app)
 def index():
     return render_template('index.html')
 
+@app.route('/')
+def GetProjById(id):
+    cur = mysql.connection.cursor()
+    query = "SELECT * FROM projects WHERE project_key = {0}".format(id)
+    cur.execute(query)
+    proj = cur.fetchone()
+    cur.close()
+    return proj
+
 
 @app.route('/')
 def GetEmployees():
@@ -46,6 +55,26 @@ def GetEmployee(id):
     empl = cur.fetchone()
     cur.close()
     return empl
+
+@app.route('/')
+def GetEmployeeStaffById(id):
+    cur = mysql.connection.cursor()
+    query = "CALL GetEmployeeStaffById({0})".format(id)
+    cur.execute(query)
+    empl = cur.fetchone()
+    cur.close()
+    return empl
+
+@app.route('/')
+def GetEmplInfByProjId(id):
+    cur = mysql.connection.cursor()
+    query = "CALL GetEmplInfByProjId({0})".format(id)
+    if(cur.execute(query) > 0):
+        empls = cur.fetchall()
+    else:
+        empls = []
+    cur.close()
+    return empls
 
 @app.route('/')
 def GetTripById(id):
@@ -172,6 +201,16 @@ def GetPassport(id):
     cur.close()
     return pas
 
+@app.route('/')
+def GetEmplFromProjById(id):
+    cur = mysql.connection.cursor()
+    query = "CALL GetEmplFromProjById({0})".format(id)
+    cur.execute(query)
+    empls = cur.fetchall()
+    cur.close()
+    return empls
+
+
 
 @app.route('/Employees/<int:ID_code>')
 def GetEmplInfo(ID_code):
@@ -189,6 +228,12 @@ def GetDeptInf(id):
     name = GetDeptName(id)
     staff = GetStaffByDepId(id)
     return render_template('Deps/Dept.html', Department=name, Staffs=staff)
+
+@app.route('/Projects/<int:id>')
+def GetProjInf(id):
+    proj = GetProjById(id)
+    empls = GetEmplInfByProjId(id)
+    return render_template('Projects/Proj.html', Project = proj, Empls = empls)
 
 
 @app.route('/BusinessTrips/<int:id>')
@@ -311,6 +356,7 @@ def AddEmployee():
     return render_template('Employees/create.html', Staff = staff)
 
 
+
 @app.route('/Employees/EditEmployee<int:ID_code>', methods=('GET', 'POST'))
 def EditEmployee(ID_code):
     if request.method == 'POST':
@@ -396,6 +442,24 @@ def AddDept():
         flash('ok!')
         return redirect(url_for('DepsList'))
     return render_template('Deps/create.html') 
+
+
+@app.route('/Projects/create', methods=('GET', 'POST'))
+def AddProj():
+    if request.method == 'POST':
+        name = request.form['Name']
+
+        if not name:
+            flash('Вы неввели название проекта!')
+     
+        cur = mysql.connection.cursor()
+        query = "INSERT INTO projects (project_name) VALUES('{0}')".format(name)
+        cur.execute(query)
+        mysql.connection.commit()
+        cur.close()
+        flash('ok!')
+        return redirect(url_for('ProjsList'))
+    return render_template('Projects/create.html') 
 
 
 @app.route('/Employees/<int:id>/delete')
@@ -509,6 +573,18 @@ def DeleteDept(id):
     return redirect(url_for('DepsList'))
 
 
+@app.route("/Projects/<int:id>", methods= ['POST'])
+def DeleteProj(id):
+    """Функция-представление для удаления отдела"""
+    cur = mysql.connection.cursor()
+    query = "DELETE FROM projects WHERE project_key = {0}".format(id)
+    cur.execute(query)
+    mysql.connection.commit()
+    cur.close()
+    flash("Проект удален!")
+    return redirect(url_for('ProjsList'))
+
+
 
 @app.route("/BuisinessTrips/<int:id>", methods= ['POST'])
 def DeleteBuisinessTrip(id):
@@ -582,5 +658,31 @@ def createTransfer(ID_code):
     staff = GetStaffAndDept()
     return render_template('Employees/createTransfer.html',  Staff = staff)
 
+@app.route('/Project/AddEmplOnProj<int:id>', methods=('GET', 'POST'))
+def AddEmplOnProj(id):
+    if request.method == 'POST':
+        empl = request.form['Employee']
+        num = request.form['Number']      
+
+        if not empl:
+            flash('Вы не указали работника!')
+        cur = mysql.connection.cursor()
+        query = "INSERT INTO project_employee (Project, Employee, Salary) VALUES({0}, {1}, {2})".format(id, empl, num)
+        cur.execute(query)
+        mysql.connection.commit()
+        cur.close()
+        flash('ok!')
+        return redirect(url_for('GetProjInf', id = id)) 
+    empls = GetEmployees()          
+    return render_template('Projects/AddEmplOnProj.html', Empls = empls)  
+
+@app.route("/Projects/<int:id><int:ID_code>", methods= ['POST'])
+def DeleteFromProj(id, ID_code):
+    cur = mysql.connection.cursor()
+    query = "DELETE FROM project_employee WHERE (Employee = {0}) AND (Project = {1})".format(ID_code, id)
+    cur.execute(query)
+    mysql.connection.commit()
+    cur.close()
+    return redirect(url_for('GetProjInf', id = id))
 
 app.run(debug=True)

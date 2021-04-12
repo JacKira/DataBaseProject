@@ -3,7 +3,9 @@
 {% block content %}
 
 <h1>{% block title %}Проекты{% endblock %}</h1>
-
+<a href="{{ url_for('AddProj') }}">
+    <span class="btn btn-warning btn-sm">Добавить проект</span>
+</a>
 
 <hr>
 
@@ -13,6 +15,14 @@
     <p>
         {{proj[1]}} <br>
     </p>
+    <a href="{{ url_for('GetProjInf', id = proj[0]) }}">
+        <span class="btn btn-warning btn-sm">Подробнее</span>
+    </a>
+    <form style="padding-top: 1%;" action="{{ url_for('DeleteProj', id= proj[0]) }}" method="POST">
+        <input type="submit" value="Удалить"
+        class="btn btn-danger btn-sm"
+        onclick="return confirm('Вы действительно хотите удалить данный проект?')">
+    </form>
 </div>
 
 {% endfor %}

@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>{% block title %}Добавление работника на проект{% endblock %}</h1>
+
+<form method="post">
+    <div class="form-group">
+        <label for="Employee">Работник</label>
+        <select name="Employee" class="selectpicker form-control">
+            {% for empl in Empls %}
+            <option value="{{empl[0]}}">
+                {{empl[5]}} - {{empl[4]}};
+                {{empl[1]}} {{empl[2]}} {{empl[3]}};
+            </option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="Number">Плата за проект</label>
+        <input type="number" name="Number"
+               placeholder="Номер" class="form-control"
+               value=0></input>
+    </div>
+
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Добавить</button>
+    </div>
+</form>
+{% endblock %}

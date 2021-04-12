@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>{{Project[1]}}</h1>
+<div class="alert alert-danger">
+    <a href="{{ url_for('AddEmplOnProj', id = Project[0]) }}">
+        <span class="btn btn-warning btn-sm">Добавить работника на проект</span>
+    </a>
+    <p>Работники на проекте:</p>
+    <div class="container" style="text-align: center;">
+        <div class="row border-bottom border-dark" >
+            <div class="col-md" style="width: 30%;">
+                Отдел
+            </div>
+            <div class="col-sm" style="width: 23%;">
+                Должность
+            </div>
+            <div class="col" style="width: 23%;">
+                ФИО
+            </div>
+            <div class="col-"style="width: 10%;">
+            </div>
+        </div>
+        {% for empl in Empls %}
+        <div class="row" style="padding-top: 0.5%;">
+            <div class="col-md" style="width: 30%;">
+                {{empl[5]}} 
+            </div>
+            <div class="col-sm" style="width: 23%;">
+                {{empl[4]}}
+            </div>
+            <div class="col" style="width: 23%;">
+                {{empl[1]}}  {{empl[2][0]}}.{{empl[3][0]}}.
+            </div>
+            <div class="col-"style="width: 10%;">
+                <a href="{{ url_for('DeleteFromProj', id = Project[0], ID_code = empl[0])}}" method="POST">
+                    <span class="btn btn-danger btn-sm">Удалить</span>
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}
