@@ -4,20 +4,33 @@ from flask_mysqldb import MySQL
 app = Flask(__name__)
 
 
-app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = 'root'
-app.config['MYSQL_DB'] = 'cursovik'
+app.config['MYSQL_DB'] = 'cursovik_v2'
 app.config['MYSQL_PORT'] = 3306
 app.config['SECRET_KEY'] = '0ur_$uper^puper_$ecret_key!'
-
-
+app.config['MYSQL_HOST'] = 'localhost'
 mysql = MySQL(app)
-
+priv = True
 
 @app.route('/')
 def index():
     return render_template('index.html')
+
+
+@app.route('/index.html', methods=('GET', 'POST'))
+def Login():
+    if request.method == 'POST':
+        log = request.form['Login']
+        psswrd = request.form['Password']
+        if(log == 'root') and (psswrd == 'root') or (log == 'bookkeeper') and (psswrd == '1234'):
+            global priv
+            priv = True
+            if(log == 'bookkeeper'):
+                priv = False
+            return render_template('home.html', Priviliges = priv)
+    return render_template('index.html')
+
 
 @app.route('/')
 def GetProjById(id):
@@ -220,38 +233,38 @@ def GetEmplInfo(ID_code):
     projs = GetProjsByEmplId(ID_code)
     trans = GetTransfersByEmplId(ID_code)
     pas = GetPassport(ID_code)
-    return render_template('Employees/employee.html', Employee=empl, Trips=trips, Information=inf, Projects=projs, Transfers=trans, Passport=pas)
+    return render_template('Employees/employee.html', Employee=empl, Trips=trips, Information=inf, Projects=projs, Transfers=trans, Passport=pas, Priviliges = priv)
 
 
 @app.route('/Deps/<int:id>')
 def GetDeptInf(id):
     name = GetDeptName(id)
     staff = GetStaffByDepId(id)
-    return render_template('Deps/Dept.html', Department=name, Staffs=staff)
+    return render_template('Deps/Dept.html', Department=name, Staffs=staff, Priviliges = priv)
 
 @app.route('/Projects/<int:id>')
 def GetProjInf(id):
     proj = GetProjById(id)
     empls = GetEmplInfByProjId(id)
-    return render_template('Projects/Proj.html', Project = proj, Empls = empls)
+    return render_template('Projects/Proj.html', Project = proj, Empls = empls, Priviliges = priv)
 
 
 @app.route('/BusinessTrips/<int:id>')
 def GetTripRep(id):
     reps = GetReports(id)
-    return render_template('BusinessTrips/Trip.html', Reps=reps, ID = id)
+    return render_template('BusinessTrips/Trip.html', Reps=reps, ID = id, Priviliges = priv)
 
 
 @app.route('/Employees')
 def EmplList():
     empls = GetEmployees()
-    return render_template('Employees/list.html', Employees=empls)
+    return render_template('Employees/list.html', Employees=empls, Priviliges = priv)
 
 
 @app.route('/Projects')
 def ProjsList():
     projs = GetProjs()
-    return render_template('Projects/list.html', Projects=projs)
+    return render_template('Projects/list.html', Projects=projs, Priviliges = priv)
 
 
 @app.route('/')
@@ -302,25 +315,25 @@ def GetBusinessTripsAndEmpl():
 @app.route('/Deps')
 def DepsList():
     deps = GetDeps()
-    return render_template('Deps/list.html', Deps=deps)
+    return render_template('Deps/list.html', Deps=deps, Priviliges = priv)
 
 
 @app.route('/SalaryReport')
 def GetAVGSalByDepReport():
     sal = GetAVGSalByDep()
-    return render_template('SalaryReport/list.html', Results=sal)
+    return render_template('SalaryReport/list.html', Results=sal, Priviliges = priv)
 
 
 @app.route('/BusinessReport')
 def GetAVGBusByDepReport():
     res = GetAVGBusByDep()
-    return render_template('BusinessReport/list.html', Results=res)
+    return render_template('BusinessReport/list.html', Results=res, Priviliges = priv)
 
 
 @app.route('/BusinessTrips')
 def GetTripsAndEmplList():
     rows = GetBusinessTripsAndEmpl()
-    return render_template('BusinessTrips/list.html', Results=rows)
+    return render_template('BusinessTrips/list.html', Results=rows, Priviliges = priv)
 
 
 @app.route('/Employees/create', methods=('GET', 'POST'))
@@ -353,7 +366,7 @@ def AddEmployee():
             flash('ok!')
             return redirect(url_for('EmplList'))
     staff = GetStaffAndDept()            
-    return render_template('Employees/create.html', Staff = staff)
+    return render_template('Employees/create.html', Staff = staff, Priviliges = priv)
 
 
 
@@ -387,7 +400,7 @@ def EditEmployee(ID_code):
             return redirect(url_for('GetEmplInfo', ID_code = ID_code))
     inf = GetEmpl(ID_code)
     staff = GetStaffAndDept()
-    return render_template('Employees/EditInf.html', Inf = inf,  Staff = staff)
+    return render_template('Employees/EditInf.html', Inf = inf,  Staff = staff, Priviliges = priv)
 
 @app.route('/Employees/EditPrivInf<int:id>', methods=('GET', 'POST'))
 def EditPrivInf(id):
@@ -403,7 +416,7 @@ def EditPrivInf(id):
         flash('ok!')
         return redirect(url_for('GetEmplInfo', ID_code = id))
     inf = GetPrivInfById(id)
-    return render_template('Employees/EditPrivInf.html', Inform = inf)     
+    return render_template('Employees/EditPrivInf.html', Inform = inf, Priviliges = priv)     
 
 @app.route('/Employees/AddPassport<int:id>', methods=('GET', 'POST'))
 def AddPassport(id):
@@ -424,7 +437,7 @@ def AddPassport(id):
         cur.close()
         flash('ok!')
         return redirect(url_for('GetEmplInfo', ID_code = id))
-    return render_template('Employees/AddPassport.html')      
+    return render_template('Employees/AddPassport.html', Priviliges = priv)      
 
 @app.route('/Deps/create', methods=('GET', 'POST'))
 def AddDept():
@@ -441,7 +454,7 @@ def AddDept():
         cur.close()
         flash('ok!')
         return redirect(url_for('DepsList'))
-    return render_template('Deps/create.html') 
+    return render_template('Deps/create.html', Priviliges = priv) 
 
 
 @app.route('/Projects/create', methods=('GET', 'POST'))
@@ -459,7 +472,7 @@ def AddProj():
         cur.close()
         flash('ok!')
         return redirect(url_for('ProjsList'))
-    return render_template('Projects/create.html') 
+    return render_template('Projects/create.html', Priviliges = priv) 
 
 @app.route('/Projects/<int:id>/edit', methods=('GET', 'POST'))
 def EditProj(id):
@@ -477,7 +490,7 @@ def EditProj(id):
         flash('ok!')
         return redirect(url_for('ProjsList'))
     proj = GetProjById(id)
-    return render_template('Projects/edit.html', Project = proj) 
+    return render_template('Projects/edit.html', Project = proj, Priviliges = priv) 
 
 
 @app.route('/Employees/<int:id>/delete')
@@ -507,7 +520,7 @@ def AddStaffTable(id):
         flash('ok!')
         return redirect(url_for('GetDeptInf', id = id)) 
     pos = GetPositions()
-    return render_template('Deps/AddStaffTable.html', Pos = pos)  
+    return render_template('Deps/AddStaffTable.html', Pos = pos, Priviliges = priv)  
 
 
 @app.route('/BusinessTrips/create', methods=('GET', 'POST'))
@@ -542,7 +555,7 @@ def AddBusinessTrip():
             flash('ok!')
             return redirect(url_for('GetTripsAndEmplList'))
     empls = GetEmployees()            
-    return render_template('BusinessTrips/create.html', Empls = empls)
+    return render_template('BusinessTrips/create.html', Empls = empls, Priviliges = priv)
 
 @app.route('/BusinessTrips/edit<int:ID>', methods=('GET', 'POST'))
 def EditBusinessTrip(ID):
@@ -576,7 +589,7 @@ def EditBusinessTrip(ID):
             return redirect(url_for('GetTripsAndEmplList'))
     empls = GetEmployees()   
     trip = GetTripById(ID)         
-    return render_template('BusinessTrips/edit.html', Trip = trip,  Empls = empls)
+    return render_template('BusinessTrips/edit.html', Trip = trip,  Empls = empls, Priviliges = priv)
 
 
 @app.route("/Deps/<int:id>", methods= ['POST'])
@@ -647,7 +660,7 @@ def AddBusinessTrips(id):
         cur.close()
         flash('ok!')
         return redirect(url_for('GetTripRep', id = id)) 
-    return render_template('BusinessTrips/createReport.html')    
+    return render_template('BusinessTrips/createReport.html', Priviliges = priv)    
 
 @app.route('/Employees/createTransfer<int:ID_code>', methods=('GET', 'POST'))
 def createTransfer(ID_code):
@@ -674,7 +687,7 @@ def createTransfer(ID_code):
             flash('ok!')
             return redirect(url_for('GetEmplInfo', ID_code = ID_code))
     staff = GetStaffAndDept()
-    return render_template('Employees/createTransfer.html',  Staff = staff)
+    return render_template('Employees/createTransfer.html',  Staff = staff, Priviliges = priv)
 
 @app.route('/Project/AddEmplOnProj<int:id>', methods=('GET', 'POST'))
 def AddEmplOnProj(id):
@@ -692,7 +705,7 @@ def AddEmplOnProj(id):
         flash('ok!')
         return redirect(url_for('GetProjInf', id = id)) 
     empls = GetEmployees()          
-    return render_template('Projects/AddEmplOnProj.html', Empls = empls)  
+    return render_template('Projects/AddEmplOnProj.html', Empls = empls, Priviliges = priv)  
 
 @app.route("/Projects/<int:id><int:ID_code>", methods= ['POST'])
 def DeleteFromProj(id, ID_code):

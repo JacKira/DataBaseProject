@@ -15,6 +15,7 @@
       <a class="navbar-brand" href="{{ url_for('index')}}"></a>
       <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav">
+            {%if Priviliges%}
               <li class="nav-item">
                   <a class="nav-link" href="{{url_for('EmplList')}}">Работники</a>
               </li>
@@ -27,12 +28,15 @@
               <li class="nav-item">
                 <a class="nav-link" href="{{url_for('ProjsList')}}">Проекты</a>
               </li>
+              {%else%}
+
               <li class="nav-item">
                 <a class="nav-link" href="{{url_for('GetAVGSalByDepReport')}}">Средний оклад по отделам</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="{{url_for('GetAVGBusByDepReport')}}">Средние командировочные по отделам</a>
               </li>
+              {%endif%}
           </ul>
       </div>
   </nav>
